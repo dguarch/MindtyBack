@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/SSG">
+
+<Resource
+      name="jdbc/MyLocalDB"
+      auth="Container"
+      type="javax.sql.DataSource"
+      global="jdbc/MyLocalDB"
+      factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+      initialSize="15"
+      maxActive="100"
+      maxIdle="20"
+      minIdle="5"
+      maxWait="10000"
+      timeBetweenEvictionRunsMillis="34000"
+      minEvictableIdleTimeMillis="55000"
+      validationQuery="SELECT 1"
+      validationInterval="34000"
+      testOnBorrow="true"
+      removeAbandoned="true"
+      removeAbandonedTimeout="55"
+      username="mindty_user"
+      password="M123"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/mindty?allowMultiQueries=true"
+/>
+</Context>
