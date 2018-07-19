@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -15,8 +16,10 @@ import javax.ws.rs.core.Response;
 
 import com.mindty.modelos.Curso;
 import com.mindty.modelos.Modulo;
+import com.mindty.modelos.StatusMessage;
 import com.mindty.persistence.CursoEM;
 import com.mindty.persistence.ModuloEM;
+import com.sun.jersey.api.client.ClientResponse.Status;
 
 @Path("/cursos")
 public class CursosAPI {
@@ -99,9 +102,20 @@ public class CursosAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
-	public Response getModulos(@PathParam("idc") int idCurso) {
-		logger.info("Estoy aqui ...");
-		System.out.println("HOlaaa");
+	public Response getModulos(@HeaderParam("token") String token, @PathParam("idc") int idCurso) {
+		
+		Autentication aut=new Autentication();
+		String userEmail = "";
+
+		userEmail = aut.getUserEmailFromToken(token);
+		
+	
+		if (userEmail == null) {
+			StatusMessage statusMessage = new StatusMessage();
+			statusMessage.setStatus(Status.FORBIDDEN.getStatusCode());
+			statusMessage.setMessage("Access Denied for this functionality !!!");
+			return Response.status(Status.FORBIDDEN.getStatusCode()).entity(statusMessage).build();
+		}
 		try {
 
 			return Response.status(202).entity(ModuloEM.getInstance().getListaModulos(idCurso)).build();
@@ -111,7 +125,7 @@ public class CursosAPI {
 		}
 
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 	@Path("{idc}/modulos/{idm}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -131,7 +145,7 @@ public class CursosAPI {
 		}
 
 	}
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Path("/{idc}/modulos")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -147,7 +161,7 @@ public class CursosAPI {
 		}
 
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
 	@Path("/{idc}/modulos/{idm}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@DELETE
@@ -167,7 +181,7 @@ public class CursosAPI {
 		}
 
 	}
-	
+/////////////////////////////////////////////////////////////////////////////////////////////////	
 	@Path("/{idc}/modulos/{idm}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@PUT

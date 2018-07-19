@@ -148,7 +148,7 @@ public class ModuloEM extends EntityManager {
 
 			Session session = factory.openSession();
 
-			cursoBuscado = session.createQuery("FROM Curso WHERE idc=:idCurso", Curso.class).setParameter("id", nIdCurso)
+			cursoBuscado = session.createQuery("FROM Curso WHERE idCurso=:idC", Curso.class).setParameter("idC", nIdCurso)
 					.getSingleResult();
 			session.close();
 

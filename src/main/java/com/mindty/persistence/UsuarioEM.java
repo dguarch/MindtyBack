@@ -12,17 +12,17 @@ import org.hibernate.transform.Transformers;
 import com.mindty.modelos.Curso;
 import com.mindty.modelos.Usuario;
 
-public class CoordinadorEM extends EntityManager {
+public class UsuarioEM extends EntityManager {
 
-	private static CoordinadorEM instance = null;
+	private static UsuarioEM instance = null;
 
-	public static final CoordinadorEM getInstance() {
+	public static final UsuarioEM getInstance() {
 		if (instance == null)
-			instance = new CoordinadorEM();
+			instance = new UsuarioEM();
 		return instance;
 	}
 
-	protected CoordinadorEM() {
+	protected UsuarioEM() {
 		super();
 	}
 
@@ -119,8 +119,7 @@ public class CoordinadorEM extends EntityManager {
 			Session session = factory.openSession();
 
 			System.out.println("Datos Usuario " + email + "  " + Password);
-			usuariobuscado = session
-					.createQuery("FROM Usuario where email = :em and password=ass", Usuario.class)
+			usuariobuscado = session.createQuery("FROM Usuario where email = :em and password=ass", Usuario.class)
 					.setParameter("em", email).setParameter("password", Password).getSingleResult();
 
 		} catch (Exception e) {
@@ -130,4 +129,100 @@ public class CoordinadorEM extends EntityManager {
 		nTipoUsuario = usuariobuscado.getTipo();
 		return nTipoUsuario;
 	}
+
+	public boolean actualizarUsuario(int idu, Usuario usuarioUpdate) {
+
+		boolean isOk = false;
+
+		try {
+			/* Hibernate */
+			Session session = factory.openSession();
+			Transaction t = session.beginTransaction();
+
+			Usuario usuarioLeido = (Usuario) session.createQuery("FROM Usuario WHERE idu=:idu", Usuario.class)
+					.setParameter("idu", idu).getSingleResult();
+
+			System.out.println("Mombre Usuario enviado: " + usuarioLeido.getNombreUsuario());
+			System.out.println("Mombre Usuario a modificar: " + usuarioLeido.getNombreUsuario());
+			usuarioLeido.setNombreUsuario(usuarioUpdate.getNombreUsuario());
+
+			session.update(usuarioLeido);
+			t.commit();
+
+			System.out.println("Mombre usuario modificado:" + usuarioLeido.getNombreUsuario());
+			isOk = true;
+
+			session.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return isOk;
+	}
+
+
+
+	public boolean deleteUsuarioPorId(int idu) {
+		/* unCurso es el objeto importado de MySQL */
+		boolean isOk = false;
+
+		/*
+		 * elCurso es el objeto que configuramos a raiz de unCurso con los parametros
+		 * que queremos
+		 */
+
+		try {
+			/* Hibernate */
+			Session session = factory.openSession();
+			Transaction tx = session.beginTransaction();
+			System.out.println("probando conexion");
+			Usuario deleteUsuario = (Usuario) session.createQuery("FROM Usuario WHERE idu=:id", Usuario.class)
+					.setInteger("id", idu).getSingleResult();
+			session.delete(deleteUsuario);
+			isOk = true;
+			tx.commit();
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return isOk;
+	}
+
+	public List<Usuario> getListaUsuarios() {
+		List<Usuario> usuarioLista = new ArrayList<Usuario>();
+		
+		Session session = factory.openSession();
+		System.out.println("probando conexión");
+		usuarioLista = session.createQuery("FROM Usuario", Usuario.class).getResultList();
+		session.close();
+		
+		// TODO Auto-generated method stub
+		return usuarioLista;
+	}
+	
+	
+	public Usuario getUsuarioPorEmail(String email, String Password) {
+		System.out.println("Datos Usuarioº1 " + email + "  " + Password);
+		Usuario usuariobuscado = new Usuario();
+		
+		try {
+			Session session = factory.openSession();
+
+			System.out.println("Datos Usuario " + email + "  " + Password);
+			usuariobuscado = session
+					.createQuery("FROM Usuario where email = :em and password= :ass", Usuario.class)
+					.setParameter("em", email).setParameter("ass", Password).getSingleResult();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		
+		return usuariobuscado!=null?usuariobuscado:null ;
+	}
+	
+	
+	
 }
