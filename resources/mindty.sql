@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-07-2018 a las 08:05:53
+-- Tiempo de generación: 19-07-2018 a las 16:12:38
 -- Versión del servidor: 5.7.11
 -- Versión de PHP: 5.6.18
 
@@ -17,8 +17,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `mindty`
+-- Database: `mindty`
 --
+CREATE DATABASE IF NOT EXISTS `mindty` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+
+--
+-- User: mindty_user'@'localhost
+-- Password: M123
+--
+CREATE USER IF NOT EXISTS 'mindty_user'@'localhost';
+SET PASSWORD FOR 'mindty_user'@'localhost' = 'M123';
+GRANT ALL PRIVILEGES ON mindty.* TO 'mindty_user'@'localhost';
+FLUSH PRIVILEGES;
+
+-- --------------------------------------------------------
+
+USE `mindty`;
 
 -- --------------------------------------------------------
 
@@ -59,7 +73,6 @@ CREATE TABLE `curso_alumno` (
 
 INSERT INTO `curso_alumno` (`idCurso`, `idAlumno`, `idu`) VALUES
 (1, 1, 0),
-(1, 2, 1),
 (1, 3, 2),
 (2, 4, 0);
 
@@ -118,6 +131,8 @@ CREATE TABLE `modulo` (
 --
 
 INSERT INTO `modulo` (`idm`, `nombreModulo`) VALUES
+(1, 'Preparación previa'),
+(2, 'Implementación de aplicaciones web'),
 (3, 'Desarrollo avanzado'),
 (4, 'Conceptos básicos de SQL'),
 (5, 'Consultas de SQL más avanzadas');
@@ -129,7 +144,6 @@ INSERT INTO `modulo` (`idm`, `nombreModulo`) VALUES
 --
 
 CREATE TABLE `usuario` (
-  `DTYPE` varchar(31) NOT NULL,
   `idu` int(11) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `nombreUsuario` varchar(255) DEFAULT NULL,
@@ -142,15 +156,15 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`DTYPE`, `idu`, `email`, `nombreUsuario`, `password`, `telefono`, `tipo`) VALUES
-('Alumno', 1, 'ht@ht.com', 'Héctor Torres', 'Password', '93-555-75-54', 3),
-('Alumno', 2, 'is@is.com', 'Ivan Synytsya', 'Password', '93-555-75-54', 3),
-('Alumno', 3, 'ya@ya.com', 'Youssef Ait', 'Password', '93-555-75-54', 3),
-('Alumno', 4, 'dg@dg.com', 'David Guarch', 'Password', '93-555-75-54', 3),
-('Usuario', 5, 'ra@ra.com', 'Ricardo Ahumada', 'Password', '93-555-75-55', 2),
-('Usuario', 6, 'am@am.com', 'Ángel M. Rayo', 'Password', '93-555-75-55', 2),
-('Usuario', 7, 'sp@sp.com', 'Silvia Perez', 'Password', '93-555-75-55', 2),
-('Usuario', 8, 'al@al.com', 'Aina Llorens', 'Password', '93-555-75-56', 1);
+INSERT INTO `usuario` (`idu`, `email`, `nombreUsuario`, `password`, `telefono`, `tipo`) VALUES
+(1, 'ht@ht.com', 'Héctor Torres', 'Password', '93-555-75-54', 3),
+(2, 'is@is.com', 'Ivan Synytsya', 'Password', '93-555-75-54', 3),
+(3, 'rp@rp.com', 'Raúl Prada', 'Password', '93-555-75-54', 3),
+(4, 'dg@dg.com', 'David Guarch', 'Password', '93-555-75-54', 3),
+(5, 'ra@ra.com', 'Ricardo Ahumada', 'Password', '93-555-75-55', 2),
+(6, 'am@am.com', 'Ángel M. Rayo', 'Password', '93-555-75-55', 2),
+(7, 'sp@sp.com', 'Silvia Perez', 'Password', '93-555-75-55', 2),
+(8, 'al@al.com', 'Aina Llorens', 'Password', '93-555-75-56', 1);
 
 --
 -- Índices para tablas volcadas
@@ -223,9 +237,9 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `curso_alumno`
 --
 ALTER TABLE `curso_alumno`
-  ADD CONSTRAINT `FK6eoshliykiitlexla1v7er7c3` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`),
-  ADD CONSTRAINT `FKhrmqy3sfscl85kyom4grf7u2v` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`),
-  ADD CONSTRAINT `FKp5old5n64ccqckh5w2po7kw5v` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`);
+  ADD CONSTRAINT `FK6eoshliykiitlexla1v7er7c3` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FKhrmqy3sfscl85kyom4grf7u2v` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FKp5old5n64ccqckh5w2po7kw5v` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `curso_formador`
