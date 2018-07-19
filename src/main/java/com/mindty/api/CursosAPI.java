@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import com.mindty.modelos.Curso;
 import com.mindty.modelos.Modulo;
 import com.mindty.persistence.CursoEM;
+import com.mindty.persistence.ModuloEM;
 
 @Path("/cursos")
 public class CursosAPI {
@@ -103,7 +104,7 @@ public class CursosAPI {
 		System.out.println("HOlaaa");
 		try {
 
-			return Response.status(202).entity(ProfesorEM.getInstance().getListaModulos(idCurso)).build();
+			return Response.status(202).entity(ModuloEM.getInstance().getListaModulos(idCurso)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(500).entity("Ha habido un error al pedir los modulos").build();
@@ -119,7 +120,7 @@ public class CursosAPI {
 		logger.info("Estoy aqui ...");
 		System.out.println("HOlaaa");
 		try {
-			String strSalida = ProfesorEM.getInstance().getModulo(idCurso, idModulo);
+			String strSalida = ModuloEM.getInstance().getModulo(idCurso, idModulo);
 			if (strSalida != null)
 				return Response.status(202).entity(strSalida).build();
 			else
@@ -135,11 +136,11 @@ public class CursosAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@POST
-	public Response addModulo(@PathParam("idc") int idCurso) {
+	public Response addModulo(@PathParam("idc") int idCurso,Modulo moduloInsertar) {
 
 		try {
 
-			return Response.status(202).entity(ProfesorEM.getInstance().getListaModulos(idCurso)).build();
+			return Response.status(202).entity(ModuloEM.getInstance().InsertarModulo(idCurso, moduloInsertar)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(500).entity("Ha habido un error al pedir los pedidos").build();
@@ -154,7 +155,7 @@ public class CursosAPI {
 
 		try {
 
-			boolean bSalida = ProfesorEM.getInstance().eliminarModulo(idCurso, idModulo);
+			boolean bSalida = ModuloEM.getInstance().eliminarModulo(idCurso, idModulo);
 			if (bSalida == true)
 				return Response.status(202).entity(bSalida).build();
 			else
@@ -166,6 +167,27 @@ public class CursosAPI {
 		}
 
 	}
+	
+	@Path("/{idc}/modulos/{idm}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@PUT
+	public Response updateModulo(@PathParam("idc") int idCurso, @PathParam("idm") int idModulo,Modulo moduloUpdate) {
+
+		try {
+
+			boolean bSalida = ModuloEM.getInstance().actualizarModulo(idCurso, idModulo, moduloUpdate);
+			if (bSalida == true)
+				return Response.status(202).entity(bSalida).build();
+			else
+				return Response.status(400).entity("El modulo no existe en el sistema").build();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(500).entity("Ha habido un error al pedir el modulo").build();
+		}
+
+	}
+
 
 	// Codigo POST
 	/*
@@ -237,22 +259,5 @@ public class CursosAPI {
 	 * 
 	 */
 
-	@Path("/{idc}/modulos/{idm}/unidades")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@GET
-	public Response getUnidad(@PathParam("idm") int idModulo) {
-		logger.info("aaaaaaaaaaaa ...");
-		System.out.println("bbbbbbbb");
-		try {
-			System.out.println("bbbbbbbb 2");
-			Modulo strSalida = AlumnoEM.getInstance().getUnidades(idModulo);
-			return Response.status(202).entity(strSalida).build();
-		} catch (Exception e) {
-			System.out.println("bbbbbbbb 3");
-			e.printStackTrace();
-			return Response.status(500).entity("error").build();
-		}
 
-	}
 }
