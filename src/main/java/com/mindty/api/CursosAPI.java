@@ -102,20 +102,21 @@ public class CursosAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
-	public Response getModulos(@HeaderParam("token") String token, @PathParam("idc") int idCurso) {
+	//public Response getModulos(@HeaderParam("token") String token, @PathParam("idc") int idCurso)
+	public Response getModulos( @PathParam("idc") int idCurso) {
 		
 		Autentication aut=new Autentication();
 		String userEmail = "";
 
-		userEmail = aut.getUserEmailFromToken(token);
+		//userEmail = aut.getUserEmailFromToken(token);
 		
 	
-		if (userEmail == null) {
+		/*if (userEmail == null) {
 			StatusMessage statusMessage = new StatusMessage();
 			statusMessage.setStatus(Status.FORBIDDEN.getStatusCode());
 			statusMessage.setMessage("Access Denied for this functionality !!!");
 			return Response.status(Status.FORBIDDEN.getStatusCode()).entity(statusMessage).build();
-		}
+		}*/
 		try {
 
 			return Response.status(202).entity(ModuloEM.getInstance().getListaModulos(idCurso)).build();
