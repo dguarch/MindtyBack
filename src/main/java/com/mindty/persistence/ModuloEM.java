@@ -159,10 +159,11 @@ public class ModuloEM extends EntityManager {
 		return cursoBuscado.getModulo();
 	}
 
-	public String getModulo(int nIdCurso, int nIdModulo) {
+	public Modulo getModulo(int nIdCurso, int nIdModulo) {
 
 		List<Curso> listaCurso = new ArrayList<Curso>();
 		List<Modulo> listaCursoModulo = new ArrayList<Modulo>();
+		Modulo moduloEncontrado=new Modulo();
 		String strNombreModulo = null;
 		try {
 			/* Hibernate */
@@ -183,7 +184,7 @@ public class ModuloEM extends EntityManager {
 				for (Modulo modulo : listaCursoModulo) {
 
 					if (modulo.getIdm() == nIdModulo) {
-						strNombreModulo = modulo.getNombreModulo();
+						moduloEncontrado=modulo;
 						System.out.println("Pillo el modulo : " + strNombreModulo);
 
 					}
@@ -198,7 +199,7 @@ public class ModuloEM extends EntityManager {
 			e.printStackTrace();
 		}
 
-		return strNombreModulo;
+		return moduloEncontrado;
 	}
 
 	public boolean eliminarModulo(int idCurso, int idModulo) {
@@ -208,6 +209,7 @@ public class ModuloEM extends EntityManager {
 		try {
 			/* Hibernate */
 			Session session = factory.openSession();
+			Transaction t = session.beginTransaction();
 
 			Modulo deleteModulo = (Modulo) session.createQuery("FROM Modulo WHERE idm=:id", Modulo.class)
 					.setParameter("id", idModulo).getSingleResult();
@@ -215,6 +217,7 @@ public class ModuloEM extends EntityManager {
 			System.out.println(deleteModulo.getNombreModulo());
 			session.delete(deleteModulo);
 			isOk = true;
+			t.commit();
 			session.close();
 
 		} catch (Exception e) {
@@ -270,9 +273,13 @@ public class ModuloEM extends EntityManager {
 			cursoBuscado = session.createQuery("FROM Curso WHERE idCurso=:id", Curso.class).setParameter("id", idCurso)
 					.getSingleResult();
 			listaModulosCurso = cursoBuscado.getModulo();
+			System.out.println(cursoBuscado.getModulo().toString());
+			
 			listaModulosCurso.add(moduloInsertar);
 			cursoBuscado.setModulo(listaModulosCurso);
-			session.save(cursoBuscado);
+			System.out.println(cursoBuscado.getModulo().toString());
+			
+			session.save(moduloInsertar);
 			t.commit();
 
 			isOk = true;

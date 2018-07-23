@@ -135,9 +135,10 @@ public class CursosAPI {
 		logger.info("Estoy aqui ...");
 		System.out.println("HOlaaa");
 		try {
-			String strSalida = ModuloEM.getInstance().getModulo(idCurso, idModulo);
-			if (strSalida != null)
-				return Response.status(202).entity(strSalida).build();
+			Modulo mLeido=new Modulo();
+			mLeido = ModuloEM.getInstance().getModulo(idCurso, idModulo);
+			if (mLeido != null)
+				return Response.status(202).entity(mLeido).build();
 			else
 				return Response.status(400).entity("El modulo no existe en el sistema").build();
 		} catch (Exception e) {
