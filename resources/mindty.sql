@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-07-2018 a las 16:12:38
+-- Tiempo de generación: 23-07-2018 a las 14:04:50
 -- Versión del servidor: 5.7.11
 -- Versión de PHP: 5.6.18
 
@@ -17,21 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mindty`
+-- Base de datos: `mindty`
 --
 CREATE DATABASE IF NOT EXISTS `mindty` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-
---
--- User: mindty_user'@'localhost
--- Password: M123
---
-CREATE USER IF NOT EXISTS 'mindty_user'@'localhost';
-SET PASSWORD FOR 'mindty_user'@'localhost' = 'M123';
-GRANT ALL PRIVILEGES ON mindty.* TO 'mindty_user'@'localhost';
-FLUSH PRIVILEGES;
-
--- --------------------------------------------------------
-
 USE `mindty`;
 
 -- --------------------------------------------------------
@@ -63,18 +51,18 @@ INSERT INTO `curso` (`idCurso`, `codCurso`, `horasCurso`, `nombreCurso`) VALUES
 
 CREATE TABLE `curso_alumno` (
   `idCurso` int(11) NOT NULL,
-  `idAlumno` int(11) NOT NULL,
-  `idu` int(11) NOT NULL
+  `idAlumno` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `curso_alumno`
 --
 
-INSERT INTO `curso_alumno` (`idCurso`, `idAlumno`, `idu`) VALUES
-(1, 1, 0),
-(1, 3, 2),
-(2, 4, 0);
+INSERT INTO `curso_alumno` (`idCurso`, `idAlumno`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 4);
 
 -- --------------------------------------------------------
 
@@ -111,6 +99,8 @@ CREATE TABLE `curso_modulo` (
 --
 
 INSERT INTO `curso_modulo` (`idCurso`, `idModulo`) VALUES
+(1, 1),
+(1, 2),
 (1, 3),
 (2, 4),
 (2, 5);
@@ -181,7 +171,7 @@ ALTER TABLE `curso`
 -- Indices de la tabla `curso_alumno`
 --
 ALTER TABLE `curso_alumno`
-  ADD PRIMARY KEY (`idCurso`,`idu`),
+  ADD KEY (`idCurso`),
   ADD KEY `FKhrmqy3sfscl85kyom4grf7u2v` (`idAlumno`);
 
 --
@@ -223,7 +213,7 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT de la tabla `modulo`
 --
 ALTER TABLE `modulo`
-  MODIFY `idm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
@@ -237,9 +227,8 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `curso_alumno`
 --
 ALTER TABLE `curso_alumno`
-  ADD CONSTRAINT `FK6eoshliykiitlexla1v7er7c3` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FKhrmqy3sfscl85kyom4grf7u2v` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FKp5old5n64ccqckh5w2po7kw5v` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK6eoshliykiitlexla1v7er7c3` FOREIGN KEY (`idAlumno`) REFERENCES `usuario` (`idu`),
+  ADD CONSTRAINT `FKhrmqy3sfscl85kyom4grf7u2v` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`);
 
 --
 -- Filtros para la tabla `curso_formador`
