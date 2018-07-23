@@ -79,7 +79,7 @@
 			</activation>
 			<properties>
 				<env>environment</env>
-				<dirsalida>/home/ec2-user/apache-tomcat/webapps</dirsalida>
+				<dirsalida>/opt/tomcat/webapps</dirsalida>
 			</properties>
 		</profile>
 	</profiles>
