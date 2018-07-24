@@ -1,0 +1,74 @@
+----------
+ /cursos
+----------
+*GET*
+curl http://localhost:8080/mindtyapirest/api/cursos -v
+
+*POST*
+curl -X POST -H "Content-Type: application/json" -d '{"nombreCurso":"Angular desde 0","codCurso":"ANG 67842","horasCurso":"50"}' http://localhost:8080/mindtyapirest/api/cursos -v
+
+
+---------------
+ /cursos/:idc
+---------------
+*GET*
+curl http://localhost:8080/mindtyapirest/api/cursos/1 -v
+
+*PUT*
+curl -X PUT -H "Content-Type: application/json" -d '{"idm":3,"nombreModulo":"Prueba"}' http://localhost:8080/mindtyapirest/api/cursos/1/modulos/3 -v
+
+*DELETE*
+curl -X DELETE http://localhost:8080/mindtyapirest/api/cursos/3 -v
+
+
+-----------------------
+ /cursos/:idc/modulos
+----------------------- 
+*GET*
+curl http://localhost:8080/mindtyapirest/api/cursos/1/modulos -v
+
+*POST*
+curl -X POST -H "Content-Type: application/json" -d '{"nombreModulo":"NuevoModulo"}' http://localhost:8080/mindtyapirest/api/cursos/1/modulos -v
+
+
+----------------------------
+ /cursos/:idc/modulos/:idm
+----------------------------
+*GET*
+curl http://localhost:8080/mindtyapirest/api/cursos/1/modulos/3 -v
+
+*PUT*
+curl -X PUT -H "Content-Type: application/json" -d '{"idm":3,"nombreModulo":"Prueba"}' http://localhost:8080/mindtyapirest/api/cursos/1/modulos/3 -v
+
+*DELETE*
+curl -X DELETE http://localhost:8080/mindtyapirest/api/cursos/1/modulos/2 -v
+
+
+------------
+ /usuarios
+------------
+*GET*
+curl http://localhost:8080/mindtyapirest/api/usuarios -v
+
+*POST*
+curl -X POST -H "Content-Type: application/json" -d '{"nombreUsuario":"UsuarioPrueba","password":"Password","email":"up@up","telefono":"934522148","tipo":"3"}' http://localhost:8080/mindtyapirest/api/usuarios -v
+
+
+-----------------
+ /usuarios/:idu
+-----------------
+*GET*
+curl http://localhost:8080/mindtyapirest/api/usuarios/9 -v
+
+*PUT*
+curl -X PUT -H "Content-Type: application/json" -d '{"idu":9,"nombreUsuario":"UsuarioPruebaModificado","password":"Password2","email":"up2@up2","telefono":"22934522148","tipo":"2"}' http://localhost:8080/mindtyapirest/api/usuarios/9 -v
+
+*DELETE*
+curl -X DELETE http://localhost:8080/mindtyapirest/api/usuarios/9 -v
+
+
+----------------
+ /authenticate
+----------------
+curl -H "Content-Type: application/json" -H "email: ht@ht.com" -H "password: Password" -v -X GET  http://localhost:8080/mindtyapirest/api/authenticate
+

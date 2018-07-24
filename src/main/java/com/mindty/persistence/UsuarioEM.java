@@ -3,13 +3,9 @@ package com.mindty.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Projections;
-import org.hibernate.transform.Transformers;
 
-import com.mindty.modelos.Curso;
 import com.mindty.modelos.Usuario;
 
 public class UsuarioEM extends EntityManager {
@@ -42,7 +38,6 @@ public class UsuarioEM extends EntityManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return usuarios;
 	}
 
@@ -63,18 +58,11 @@ public class UsuarioEM extends EntityManager {
 		}
 
 		return profe;
-
 	}
 
 	public Usuario getUsuarioPorId(int idu) {
 
-		/* unCurso es el objeto importado de MySQL */
 		Usuario unUsuario = new Usuario();
-
-		/*
-		 * elCurso es el objeto que configuramos a raiz de unCurso con los parametros
-		 * que queremos
-		 */
 		Usuario elUsuario = new Usuario();
 
 		/* Hibernate */
@@ -142,10 +130,16 @@ public class UsuarioEM extends EntityManager {
 			Usuario usuarioLeido = (Usuario) session.createQuery("FROM Usuario WHERE idu=:idu", Usuario.class)
 					.setParameter("idu", idu).getSingleResult();
 
-			System.out.println("Mombre Usuario enviado: " + usuarioLeido.getNombreUsuario());
+			System.out.println("Mombre Usuario enviado: " + usuarioUpdate.getNombreUsuario());
 			System.out.println("Mombre Usuario a modificar: " + usuarioLeido.getNombreUsuario());
+			
+			usuarioLeido.setIdu(usuarioUpdate.getIdu());
+			usuarioLeido.setEmail(usuarioUpdate.getEmail());
+			usuarioLeido.setPassword(usuarioUpdate.getPassword());
+			usuarioLeido.setTelefono(usuarioUpdate.getTelefono());
+			usuarioLeido.setTipo(usuarioUpdate.getTipo());
 			usuarioLeido.setNombreUsuario(usuarioUpdate.getNombreUsuario());
-
+			
 			session.update(usuarioLeido);
 			t.commit();
 
@@ -157,20 +151,12 @@ public class UsuarioEM extends EntityManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return isOk;
 	}
 
-
-
 	public boolean deleteUsuarioPorId(int idu) {
-		/* unCurso es el objeto importado de MySQL */
-		boolean isOk = false;
 
-		/*
-		 * elCurso es el objeto que configuramos a raiz de unCurso con los parametros
-		 * que queremos
-		 */
+		boolean isOk = false;
 
 		try {
 			/* Hibernate */
@@ -186,7 +172,6 @@ public class UsuarioEM extends EntityManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return isOk;
 	}
 
@@ -218,11 +203,6 @@ public class UsuarioEM extends EntityManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		
 		return usuariobuscado!=null?usuariobuscado:null ;
 	}
-	
-	
-	
 }
