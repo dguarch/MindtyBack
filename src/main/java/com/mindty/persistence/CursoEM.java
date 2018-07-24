@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.mindty.modelos.Curso;
+import com.mindty.modelos.Modulo;
 import com.mindty.modelos.Usuario;
 
 
@@ -57,25 +58,33 @@ public class CursoEM extends EntityManager {
 		return newId;
 	}
 
-	public boolean putCurso(Curso cursoUpdater) {
+	public boolean putCurso(int idCurso,Curso cursoUpdater) {
 
 		boolean isOk = false;
 
 		try {
 			/* Hibernate */
 			Session session = factory.openSession();
+			Transaction t = session.beginTransaction();
+
+			Curso cursoLeido = (Curso) session.createQuery("FROM Curso WHERE idCurso=:id", Curso.class)
+					.setParameter("id", idCurso).getSingleResult();
+
 			
-			Curso cursoActualizar = cursoUpdater;
-			session.update(cursoActualizar);
-			
-			session.close();
-			/* Hibernate */
+			cursoLeido.setNombreCurso(cursoUpdater.getNombreCurso());
+
+			session.update(cursoLeido);
+			t.commit();
+
 			
 			isOk = true;
+
+			session.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return isOk;
 	}
 

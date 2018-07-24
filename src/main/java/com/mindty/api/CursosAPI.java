@@ -69,7 +69,7 @@ public class CursosAPI {
 	@PUT
 	public Response updateCurso(@PathParam("idc") int idc,Curso cursoUpdate) {
 		try {
-			return Response.status(202).entity(CursoEM.getInstance().putCurso(cursoUpdate)).build();
+			return Response.status(202).entity(CursoEM.getInstance().putCurso(idc,cursoUpdate)).build();
 		} catch (Exception e) {
 			return Response.status(500).entity("Internal Server Error").build();
 		}
